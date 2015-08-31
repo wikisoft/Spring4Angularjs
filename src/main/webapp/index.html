@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>MyAPP</title>
+<!-- META -->
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Angular client">
+<meta name="author" content="R@c">
+<!-- le CSS -->
+<link rel="stylesheet" href="lib/bootstrap.min.css" />
+<link href="lib/bootstrap-theme.min.css" rel="stylesheet" />
+<link href="lib/bootstrap-select.min.css" rel="stylesheet" />
+<link href="lib/font-awesome.min.css" rel="stylesheet"/>
+<!--   <link href="assets/css/footable.core.min.css" rel="stylesheet"/> -->
+
+<!-- Bootstrap core JavaScript ================================================== -->
+<script type="text/javascript" src="lib/jquery.min.js"></script>
+<script type="text/javascript" src="lib/bootstrap.min.js"></script>
+<script type="text/javascript" src="lib/bootstrap-select.min.js"></script>
+<script type="text/javascript" src="lib/footable.js"></script>
+<!-- angular js -->
+<script type="text/javascript" src="lib/angular.min.js"></script>
+<script type="text/javascript" src="lib/ui-bootstrap-tpls.min.js"></script>
+<script type="text/javascript" src="lib/angular-route.min.js"></script>
+<script type="text/javascript" src="lib/angular-translate.min.js"></script>
+<script type="text/javascript" src="lib/angular-base64.min.js"></script>
+<!-- modules -->
+<!-- <script type="text/javascript" src="modules/main.js"></script> -->
+<!-- services -->
+<!-- <script type="text/javascript" src="services/config.js"></script> -->
+<!-- directives -->
+<!-- <script type="text/javascript" src="directives/waiting.js"></script> -->
+<!-- controllers -->
+<!-- <script type="text/javascript" src="controllers/appController.js"></script> -->
+</head>
+<!-- contrôleur [appCtrl], modèle [app] -->
+<body ng-app="myApp" ng-controller="appCtrl">
+	<div class="container">
+		<h2>Task</h2>
+		<div class="row">
+			<div class="col-lg-12 form-group">
+				<div class="col-lg-2">Task name :</div>
+				<div class="col-lg-4">
+					<input type="hidden" ng-model="task.id">
+					<input type="text" class="form-control" ng-model="task.title">
+				</div>
+			</div>
+			<div class="col-lg-12 form-group">
+				<div class="col-lg-2">Task description :</div>
+				<div class="col-lg-4">
+					<input type="text" class="form-control" ng-model="task.description">
+				</div>
+			</div>
+			<div class="col-lg-12">
+				<div class="col-lg-6 form-group">
+					<button class="btn btn-primary" ng-click="saveTask()">Save</button>
+					<button class="btn btn-danger " ng-click="clear()">Clear</button>
+				</div>
+			</div>
+
+			<div class="col-lg-12">
+				<div class="table-responsive col-lg-6">
+					<table class="table table-bordered table-hover table-striped">
+						<thead>
+							<tr>
+								<th>#</th>
+								<th>Task name</th>
+								<th>Task description</th>
+								<th width="10%"></th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr ng-repeat="task in tasks">
+								<td>{{ task.id }}</td>
+								<td>{{ task.title }}</td>
+								<td>{{ task.description }}</td>
+								<td nowrap=nowrap align="center">
+					            	<i ng-click="editTask(task)" style="color: blue" class="fa fa-lg fa-pencil-square-o"></i>
+					            	<i ng-click="deleteTask(task)" style="color: blue" class="fa fa-lg fa-trash-o"></i>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+
+		<script>
+			var app = angular.module('myApp', []);
+			app.controller('appCtrl', function($scope, $http) {
+				
+				$http.get('taskList').success(function(data) {
+					$scope.tasks = data;
+				}); 
+				
+				$scope.saveTask = function() {
+					$http.post('/saveTask',$scope.task)
+					.success(function(data, status, headers, config) {
+						$scope.tasks = data;
+						$scope.clear();
+					});
+				};
+				
+				$scope.deleteTask = function(task) {
+					if (confirm("Delete!")){
+						$http.post('/deleteTask',task)
+						.success(function(data, status, headers, config) {
+							$scope.tasks = data;
+							$scope.clear();
+					})};
+				};
+				
+				$scope.editTask = function(task) {
+					//alert("iii "+task.id);
+					$scope.task.id = task.id;
+					$scope.task.title = task.title;
+					$scope.task.description = task.description;
+					//alert($scope.task.id);
+				};
+				
+				$scope.clear = function() {
+					$scope.task.id = "";
+					$scope.task.title = "";
+					$scope.task.description = "";
+				};
+			});
+		</script>
+	</div>
+</body>
+</html>

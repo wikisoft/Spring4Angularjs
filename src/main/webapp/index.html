@@ -53,7 +53,7 @@
 				</div>
 			</div>
 			<div class="col-lg-12">
-				<div class="col-lg-6 form-group">
+				<div align="right" class="col-lg-6 form-group">
 					<button class="btn btn-primary" ng-click="saveTask()">Save</button>
 					<button class="btn btn-danger " ng-click="clear()">Clear</button>
 				</div>
@@ -114,15 +114,13 @@
 				};
 				
 				$scope.editTask = function(task) {
-					//alert("iii "+task.id);
 					$scope.task.id = task.id;
 					$scope.task.title = task.title;
 					$scope.task.description = task.description;
-					//alert($scope.task.id);
 				};
 				
 				$scope.clear = function() {
-					//$scope.task.id = "";
+					$scope.task.id = "";
 					$scope.task.title = "";
 					$scope.task.description = "";
 				};

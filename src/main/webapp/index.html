@@ -90,6 +90,8 @@
 			var app = angular.module('myApp', []);
 			app.controller('appCtrl', function($scope, $http) {
 				
+				$scope.task = {};
+				
 				$http.get('taskList').success(function(data) {
 					$scope.tasks = data;
 				}); 
@@ -120,7 +122,7 @@
 				};
 				
 				$scope.clear = function() {
-					$scope.task.id = "";
+					//$scope.task.id = "";
 					$scope.task.title = "";
 					$scope.task.description = "";
 				};

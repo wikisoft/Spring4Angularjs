@@ -34,21 +34,21 @@ public class TaskController {
 	@RequestMapping(value = "/taskList", method = RequestMethod.GET)
 	public @ResponseBody
 	List<Task> getTaskList() {
-		return taskService.getTasks();
+		return taskService.findAllOrderByTitleAsc();
 	}
 
 	@RequestMapping(value = "/saveTask", method = RequestMethod.POST)
 	public @ResponseBody
 	List<Task> saveTask(@RequestBody final Task task) {
 		taskService.save(task);
-		return taskService.getTasks();
+		return taskService.findAllOrderByTitleAsc();
 	}
 
 	@RequestMapping(value = "/deleteTask", method = RequestMethod.POST)
 	public @ResponseBody
 	List<Task> deleteTask(@RequestBody final Task task) {
 		taskService.deleteTask(task);
-		return taskService.getTasks();
+		return taskService.findAllOrderByTitleAsc();
 	}
 
 }

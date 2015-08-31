@@ -23,7 +23,7 @@ public class TaskTest {
 
 	@Test
 	public void deleteAllTasks() {
-		taskService.deleteAllTasks();
+		// taskService.deleteAllTasks();
 		System.err.println(taskService.getTasks().size());
 	}
 
